@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  web-proxy:
+    image: keymetrics/pm2:latest-alpine
+    restart: unless-stopped
+    working_dir: /home/node/reverseproxy
+    depends_on:
+      - mongodata
+      - redisdata
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/home/node/reverseproxy/
+    environment:
+      NODE_ENV: production
+    command: "pm2-runtime start pm2_apps.json  --env production"
+  
+  redisdata:
+    image: redis
+    restart: unless-stopped
+
+  mongodata:
+    image: mongo:4.4.18 #debe ser esta imágen para producción ya que el server no soporta amd64-avx de la última imagen mongo
+    restart: unless-stopped
+    volumes:
+      - ./mongodata:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: somerootname
+      MONGO_INITDB_ROOT_PASSWORD: somerootpass
+
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongodata
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: somerootname
+      ME_CONFIG_MONGODB_ADMINPASSWORD: somerootpass
+      ME_CONFIG_MONGODB_URL: mongodb://somerootname:somerootpass@mongodata:27017/
+      ME_CONFIG_OPTIONS_EDITORTHEME: darcula
+      ME_CONFIG_BASICAUTH_USERNAME: somerootname
+      ME_CONFIG_BASICAUTH_PASSWORD: somerootpass

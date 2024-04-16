@@ -1,0 +1,15 @@
+{
+  apps : [
+    {
+      name        : "greenlockserver",
+      script      : "./src/server/greenlock_server.js",
+      instances: 1,
+      watch: ["src/server"],
+      watch_delay: 1000,
+      ignore_watch : ["node_modules"],
+      env_production: {
+        NODE_ENV: "production"
+      }
+    }
+  ]
+}

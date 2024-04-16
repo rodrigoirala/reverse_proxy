@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  node:
+    image: node
+    restart: "no"
+    working_dir: /home/node/reverseproxy
+    volumes:
+      - ./:/home/node/reverseproxy/
+    command: "bash build.sh"
+

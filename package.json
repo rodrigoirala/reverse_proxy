@@ -1,0 +1,59 @@
+{
+  "name": "Reverseproxy",
+  "version": "0.9.8",
+  "description": "",
+  "private": false,
+  "main": "src/server/app.js",
+  "author": "Rodrala",
+  "license": "MIT",
+  "keywords": [
+    "koa",
+    "reverse-proxy"
+  ],
+  "scripts": {
+    "start-ssl": " NODE_ENV=production node src/server/greenlock_server.js",
+    "start": "nodemon src/server/app.js",
+    "test:server": "eslint ./src/server",
+    "debug": "nodemon --watch src/server --inspect=0.0.0.0 src/server/greenlock_server.js NODE_ENV=development",
+    "development": "nodemon --watch src/server --inspect=0.0.0.0 src/server/app.js NODE_ENV=development",
+    "postinstall": "patch-package"
+  },
+  "overrides": {
+    "chokidar": "3.5.3",
+    "glob-parent": "6.0.2"
+  },
+  "dependencies": {
+    "@root/keypairs": "^0.10.3",
+    "bcrypt": "^5.0.1",
+    "bluebird": "^3.7.2",
+    "config": "3.3.6",
+    "express": "^4.18.1",
+    "greenlock-express": "^4.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "koa": "2.7.0",
+    "koa-body": "^6.0.1",
+    "koa-jwt": "^4.0.4",
+    "koa-logger": "3.2.1",
+    "koa-mount": "4.0.0",
+    "koa-proxies": "0.12.2",
+    "koa-route": "^3.2.0",
+    "koa-router": "^12.0.0",
+    "koa2-ratelimit": "1.1.0",
+    "logger": "0.0.1",
+    "mongodb": "^4.6.0",
+    "nodemon": "^3.0.1",
+    "patch-package": "^6.0.2",
+    "path": "^0.12.7",
+    "pm2": "^5.3.0",
+    "pm2-prom-module-client": "^1.0.3",
+    "prom-client": "^15.1.0",
+    "redis": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://rodrigoirala@bitbucket.org/rodrigoirala/reverseproxy.git"
+  },
+  "engines": {
+    "node": ">= 6"
+  }
+}

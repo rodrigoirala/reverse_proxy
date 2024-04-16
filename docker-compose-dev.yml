@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  web-proxy:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    restart: "no"
+    working_dir: /home/node/reverseproxy
+    depends_on:
+      - mongodata
+      - redisdata
+    ports:
+      - "3008:3002"
+      - "9229:9229"
+      - "8080:8080"
+      - "9988:9988"
+    volumes:
+      - ./:/home/node/reverseproxy/
+    environment:
+      NODE_ENV: development
+    command: "pm2-runtime start pm2_apps_dev.json  --env development"
+
+  redisdata:
+    image: redis
+    restart: "no"
+
+  mongodata:
+    image: mongo
+    restart: "no"
+    volumes:
+      - ./mongodata:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: proxy
+      MONGO_INITDB_ROOT_PASSWORD: proxydev
+    command: ["--bind_ip_all"]
+
+  mongo-express:
+    image: mongo-express
+    restart: "no"
+    depends_on:
+      - mongodata
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: proxy
+      ME_CONFIG_MONGODB_ADMINPASSWORD: proxydev
+      ME_CONFIG_MONGODB_URL: mongodb://proxy:proxydev@mongodata:27017/
+      ME_CONFIG_OPTIONS_EDITORTHEME: darcula
+      ME_CONFIG_BASICAUTH_USERNAME: proxy
+      ME_CONFIG_BASICAUTH_PASSWORD: proxydev

@@ -1,0 +1,53 @@
+{
+  "port": 3002,
+  "clearLogInterval": 60000,
+  "isDev": true,
+  "jwtSecretKey": "someJWTkey",
+  "jwtDefaultTTL": "32d",
+  "landingPageRedirect": "https://somedomain.org.ar",
+  "PROXY_LOG": {
+    "enabled": true,
+    "server_url": "mongodb://someuser:somepass@mongodata:27017",
+    "database": "reverseproxy",
+    "pool_size": 3
+  },
+  "RATE_LIMIT_DB_CONNECTION_OBJECT": {"url": "redis://@redisdata/1"},
+  "RATE_LIMIT_OPTIONS": {
+    "interval": { "min": 1 }, 
+    "max": 500, 
+    "timeWait": 0, 
+    "message": "Ha superado la cantidad de solicitudes. Aguarde unos minutos y vuelva a intentar",
+    "prefixKeySeparator": "|",
+    "whitelist": ["::ffff:172.15.0.1"]
+  },
+  "RATE_LIMIT_SKIP_ROUTES": [
+    "tome-path-to-avoid-rate-limit"
+  ],
+  "RATE_LIMIT_IPS_WHITELIST": [
+    "::ffff:172.15.0.1"
+  ],
+  "METRICS": {
+    "enabled": true,
+    "regexPaths": [
+    "^\/some-regex"]
+  },
+  "PROXY_OPTIONS": [
+    { "sourcePath": "^\/some-path",
+      "targetPath": "",
+      "authRequired": false,
+      "options": {
+          "target": "http://some-lan-host",
+          "logs": true,
+          "followRedirects": false,
+          "changeOrigin": false,
+          "autoRewrite": false,
+          "preserveHeaderKeyCase":  true,
+          "hostRewrite": false,
+          "toProxy": false,
+          "ignorePath": false,
+          "prependPath": false,
+          "protocolRewrite": true
+        }
+    }
+  ]
+}

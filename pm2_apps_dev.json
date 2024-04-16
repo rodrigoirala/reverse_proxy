@@ -1,0 +1,19 @@
+{
+  apps : [
+    {
+      name        : "reverseproxy",
+      script      : "src/server/app.js",
+      instances: 3,
+      exec_mode: "cluster",
+      watch: ["src/server"],
+      watch_delay: 1000,
+      ignore_watch : ["node_modules"],
+      env_production: {
+        NODE_ENV: "development"
+      },
+      env_development: {
+        NODE_ENV: "development"
+      }
+    }
+  ]
+}
